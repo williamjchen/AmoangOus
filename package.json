@@ -4,6 +4,7 @@
   "description": "discord bot that mutes players during among us games",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cooolio kid",

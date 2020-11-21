@@ -19,7 +19,7 @@ module.exports = (game, message, callback) => {
         description: 'Join the call and react to this message with your colour to join game',
         fields: [{
         name: 'Web Sync',
-        value: `Visit **[google.ca](https://google.ca)** and enter code `
+        value: `Visit **[amoangous.me](https://amoangous.me)** and enter code `
         },
         {
         name: 'App Sync',
@@ -29,7 +29,7 @@ module.exports = (game, message, callback) => {
     }}).then(message => {
         emojiId.map(id => message.react(id))
         callback(message.id)
-    }).catch(() => {
-        console.log("error reacting")
+    }).catch((e) => {
+        console.log("error reacting", e)
     })
 }

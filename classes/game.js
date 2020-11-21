@@ -43,8 +43,8 @@ module.exports = class Game {
         this.getPlayerByColour(colour).alive = alive
     }
 
-    addPlayer(user, colour){
-        const player = new Player(user, colour)
+    addPlayer(user, colour, alive=true){
+        const player = new Player(user, colour, alive)
         this.players.push(player)
         clearTimeout(this.timer)
     }

@@ -1,9 +1,9 @@
 module.exports = class Player{
-    constructor(user, colour){
+    constructor(user, colour, alive){
         this.user = user
         this.name = user.displayName
         this.colour = colour
-        this.alive = true
+        this.alive = alive
     }
 
     setAlive(state){

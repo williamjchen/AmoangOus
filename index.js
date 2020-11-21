@@ -3,11 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const command = require('./command.js');
-const mute = require('./commands/mute.js');
-const unmute = require('./commands/unmute.js');
-const start = require('./commands/start.js');
-const end = require('./commands/end')
-const sendEmbed = require('./commands/sendembed')
+const sendEmbed = require('./Commands/sendembed')
 const manager = require('./manager.js');
 
 const io = require('socket.io')(8080)
@@ -134,14 +130,16 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   })
 
 client.on('messageReactionAdd', (reaction, user) => {
+    let alive = true
     if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot){
         reaction.message.guild.members.fetch(user.id).then(member => {
             if(Manager.getGameByEmbedId(reaction.message.id).hasPlayer(member)){
+                alive = Manager.getGameByEmbedId(reaction.message.id).getPlayerbyUser(member).alive
                 Manager.getGameByEmbedId(reaction.message.id).removePlayer(member)
             }
             if(member.voice.channel === Manager.getGameByEmbedId(reaction.message.id).voiceChannel){
                 if(!Manager.getGameByEmbedId(reaction.message.id).hasPlayerByColour(reaction.emoji.name)){
-                    Manager.getGameByEmbedId(reaction.message.id).addPlayer(member, reaction.emoji.name)
+                    Manager.getGameByEmbedId(reaction.message.id).addPlayer(member, reaction.emoji.name, alive)
                     reaction.message.channel.send(`**${member.displayName}** added to game in **${Manager.getGameByEmbedId(reaction.message.id).voiceChannel.name}** as **${reaction.emoji.name}**`)
                     reaction.message.reactions.cache.filter(r => r.users.cache.has(user.id)).forEach((values, keys)=> {
                         if(values.emoji.id !== reaction.emoji.id){

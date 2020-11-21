@@ -1,4 +1,4 @@
-const Game = require('./Classes/game')
+const Game = require('./classes/game')
 
 module.exports = class Manager {
     constructor(io){

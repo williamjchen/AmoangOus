@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const command = require('./command.js');
-const sendEmbed = require('./Commands/sendembed')
+const sendEmbed = require('./Commands/sendembed.js')
 const manager = require('./manager.js');
 
 const io = require('socket.io')(8080)

@@ -41,6 +41,7 @@ module.exports = class Game {
 
     setPlayerState(colour, alive){
         this.getPlayerByColour(colour).alive = alive
+        this.mute()
     }
 
     addPlayer(user, colour, alive=true){

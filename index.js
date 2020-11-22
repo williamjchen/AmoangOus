@@ -179,7 +179,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 })
 
 client.on('messageReactionRemove', (reaction, user) => {
-    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && !botRemove.includes(user) && reaction.users.cache.has(client.user.id)){
+    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && !botRemove.includes(user) && reaction.users.cache.has(client.user.id) && Manager.getGameByEmbedId(reaction.message.id).hasPlayer(user)){
         reaction.message.guild.members.fetch(user.id).then(member => {
             Manager.getGameByEmbedId(reaction.message.id).removePlayer(member)
             reaction.message.channel.send(`**${member.displayName}** removed from game in **${Manager.getGameByEmbedId(reaction.message.id).voiceChannel.name}** as **${reaction.emoji.name}**`)

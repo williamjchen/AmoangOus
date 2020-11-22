@@ -13,6 +13,7 @@ module.exports = class Game {
         this.id = List.list[Math.floor(Math.random()*100)]
         this.embedId
         this.timer = setTimeout(() => {
+            this.unMuteAll()
             this.textChannel.send(`The game in **${this.voiceChannel.name}** has ended. No players were in the game for 30 seconds`)
             this.manager.removeGame(this.voiceChannel)
         }, 30000)
@@ -42,6 +43,7 @@ module.exports = class Game {
     setPlayerState(colour, alive){
         this.getPlayerByColour(colour).alive = alive
         this.mute()
+        this.unMute()
     }
 
     addPlayer(user, colour, alive=true){
@@ -51,10 +53,12 @@ module.exports = class Game {
     }
 
     removePlayer(user){
+        this.unMuteUser(user)
         this.players.splice(this.players.indexOf(this.getPlayerbyUser(user)), 1)
         
         if(this.players.length == 0){
             this.timer = setTimeout(() => {
+                this.unMuteAll()
                 this.textChannel.send(`The game in **${this.voiceChannel.name}** has ended. No players were in the game for 30 seconds`)
                 this.manager.removeGame(this.voiceChannel)
             }, 30000)
@@ -87,6 +91,7 @@ module.exports = class Game {
                 player.alive = true
             }
         }
+        this.unMute()
     }
 
     async mute(){
@@ -102,6 +107,20 @@ module.exports = class Game {
             if(player.user.voice.serverMute === true && player.alive){
                 await player.user.voice.setMute(false)
             }
+        }
+    }
+
+    async unMuteAll(){
+        for(const player of this.players){
+            if(player.user.voice.serverMute === true){
+                await player.user.voice.setMute(false)
+            }
+        }
+    }
+
+    async unMuteUser(user){
+        if(user.voice.serverMute === true){
+            await user.voice.setMute(false)
         }
     }
 }

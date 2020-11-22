@@ -49,7 +49,7 @@ io.on('connection', socket => {
     socket.on('switchAlive', data => {
         const {code, colour, alive} = JSON.parse(data)
         const game = Manager.getGameByCode(code)
-        game.getPlayerByColour(colour).alive = alive
+        game.setPlayerState(colour, alive)
         sendUpdatePlayers(code, game.toJSON())
     })
 
@@ -104,6 +104,7 @@ client.on('message', message => {
                 message.channel.send("Why are you ending the game so fast? Wait until the bot adds all the emojis.(I was too lazy to implement a proper fix, so you gotta wait)")
             }*/
             if(numberOfReactionsFromBot >= 12){
+                game.unMuteAll()
                 Manager.removeGame(message.member.voice.channel)
                 message.channel.send(`Game ended in **${message.member.voice.channel.name}**`)
             }else{

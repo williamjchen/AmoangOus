@@ -90,7 +90,20 @@ client.on('message', message => {
     if(message.content == '?end'){
         if(Manager.hasGame(message.member.voice.channel)){
             const game = Manager.getGame(message.member.voice.channel)
+            let numberOfReactionsFromBot = 0
+            game.textChannel.messages.cache.find(m => m.id === game.embedId).reactions.cache.forEach((r) => {
+                if(r.users.cache.has(client.user.id)){
+                    numberOfReactionsFromBot++
+                }
+            })
+            /*
             if(game.textChannel.messages.cache.find(m => m.id === game.embedId).reactions.cache.size >= 12){
+                Manager.removeGame(message.member.voice.channel)
+                message.channel.send(`Game ended in **${message.member.voice.channel.name}**`)
+            }else{
+                message.channel.send("Why are you ending the game so fast? Wait until the bot adds all the emojis.(I was too lazy to implement a proper fix, so you gotta wait)")
+            }*/
+            if(numberOfReactionsFromBot >= 12){
                 Manager.removeGame(message.member.voice.channel)
                 message.channel.send(`Game ended in **${message.member.voice.channel.name}**`)
             }else{
@@ -131,7 +144,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
 client.on('messageReactionAdd', (reaction, user) => {
     let alive = true
-    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot){
+    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && reaction.users.cache.has(client.user.id)){
         reaction.message.guild.members.fetch(user.id).then(member => {
             if(Manager.getGameByEmbedId(reaction.message.id).hasPlayer(member)){
                 alive = Manager.getGameByEmbedId(reaction.message.id).getPlayerbyUser(member).alive
@@ -166,7 +179,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 })
 
 client.on('messageReactionRemove', (reaction, user) => {
-    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && !botRemove.includes(user)){
+    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && !botRemove.includes(user) && reaction.users.cache.has(client.user.id)){
         reaction.message.guild.members.fetch(user.id).then(member => {
             Manager.getGameByEmbedId(reaction.message.id).removePlayer(member)
             reaction.message.channel.send(`**${member.displayName}** removed from game in **${Manager.getGameByEmbedId(reaction.message.id).voiceChannel.name}** as **${reaction.emoji.name}**`)

@@ -179,12 +179,14 @@ client.on('messageReactionAdd', (reaction, user) => {
 })
 
 client.on('messageReactionRemove', (reaction, user) => {
-    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && !botRemove.includes(user) && reaction.users.cache.has(client.user.id) && Manager.getGameByEmbedId(reaction.message.id).hasPlayer(user)){
-        reaction.message.guild.members.fetch(user.id).then(member => {
-            Manager.getGameByEmbedId(reaction.message.id).removePlayer(member)
-            reaction.message.channel.send(`**${member.displayName}** removed from game in **${Manager.getGameByEmbedId(reaction.message.id).voiceChannel.name}** as **${reaction.emoji.name}**`)
-            sendUpdatePlayers(Manager.getGameByEmbedId(reaction.message.id).id, Manager.getGameByEmbedId(reaction.message.id).toJSON())
-        })
+    if(Manager.hasGameByEmbedId(reaction.message.id) && !user.bot && !botRemove.includes(user) && reaction.users.cache.has(client.user.id)){ 
+            reaction.message.guild.members.fetch(user.id).then(member => {
+                if(Manager.getGameByEmbedId(reaction.message.id).hasPlayer(member)){
+                    Manager.getGameByEmbedId(reaction.message.id).removePlayer(member)
+                    reaction.message.channel.send(`**${member.displayName}** removed from game in **${Manager.getGameByEmbedId(reaction.message.id).voiceChannel.name}** as **${reaction.emoji.name}**`)
+                    sendUpdatePlayers(Manager.getGameByEmbedId(reaction.message.id).id, Manager.getGameByEmbedId(reaction.message.id).toJSON())
+                }
+            })
     }
     botRemove.splice(botRemove.indexOf(user), 1)
 })

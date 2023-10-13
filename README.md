@@ -12,8 +12,11 @@
   </p>
 </p>
 
+## Use
+Visit [amoangous.com](https://amoangous.com/)
+
 ## About The Project
-This is a discord bot that you can [add here](https://amoangous.me/). This bot interacts with the [web control](https://github.com/WilliamJChen/AmonagOusWebControl), aswell as the desktop client, that will automatically mute and unmute depending on game state.
+This is a discord bot that you can [add here](https://amoangous.com/). This bot interacts with the [web control](https://github.com/WilliamJChen/AmonagOusWebControl), aswell as the desktop client, that will automatically mute and unmute depending on game state.
 
 The bot can keep track of dead and alive players
 

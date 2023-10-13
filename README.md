@@ -14,6 +14,8 @@
 
 ## Use
 Visit [amoangous.com](https://amoangous.com/)
+![site screenshot](images/site.jpg)
+![in action](images/discord.jpg)
 
 ## About The Project
 This is a discord bot that you can [add here](https://amoangous.com/). This bot interacts with the [web control](https://github.com/WilliamJChen/AmonagOusWebControl), aswell as the desktop client, that will automatically mute and unmute depending on game state.
